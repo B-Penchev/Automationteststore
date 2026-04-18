@@ -1,6 +1,5 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.DevTools.V145.Network;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Support.UI;
 using FluentAssertions;
@@ -26,14 +25,13 @@ namespace Automationteststore
                 driver.Url = "https://automationteststore.com/";
                 driver.FindElement(By.LinkText("Login or register")).Click();
                 driver.FindElement(By.CssSelector("button[title='Continue']")).Click();
-                //Your Personal Details
+           
                 driver.FindElement(By.CssSelector("#AccountFrm_firstname")).SendKeys("Boris");
                 driver.FindElement(By.CssSelector("#AccountFrm_lastname")).SendKeys("Penchev");
                 driver.FindElement(By.CssSelector("#AccountFrm_email")).SendKeys("test" + System.Guid.NewGuid() + "@test.com");
                 
                 driver.FindElement(By.CssSelector("#AccountFrm_address_1")).SendKeys("Mladost");
                 driver.FindElement(By.CssSelector("#AccountFrm_city")).SendKeys("Sofia");
-                driver.FindElement(By.Id("AccountFrm_agree")).Click();
 
                 var selectCountry = driver.FindElement(By.Id("AccountFrm_country_id"));
                 var selectCoun = new SelectElement(selectCountry);
@@ -50,11 +48,14 @@ namespace Automationteststore
                 driver.FindElement(By.CssSelector("#AccountFrm_password")).SendKeys("0000");
                 driver.FindElement(By.CssSelector("#AccountFrm_confirm")).SendKeys("0000");
 
-
+                driver.FindElement(By.Id("AccountFrm_agree")).Click();
                 driver.FindElement(By.CssSelector("button[title='Continue']")).Click();
 
                 var welcomeText = driver.FindElement(By.CssSelector(".menu_text")).Text;
                 welcomeText.Should().Contain("Welcome back Boris", "because the user just registered");
+
+                var sideHeader = driver.FindElement(By.XPath("//*[@id=\"maincontainer\"]/div/div[2]/div[1]/h2/span"));
+                sideHeader.Text.Should().Be("MY ACCOUNT");
 
             }
             finally
@@ -62,7 +63,40 @@ namespace Automationteststore
                 driver.Quit();
                 driver.Dispose();
             }
-
         }
+        [Theory]
+        [InlineData("chrome")]
+        [InlineData("edge")]
+        public void RegistrationFormValidationMessage(string browser)
+        {
+            IWebDriver driver = browser switch
+            {
+                "chrome" => new ChromeDriver(),
+                "edge" => new EdgeDriver(),
+                _ => throw new ArgumentException("Unknown browser")
+            };
+
+            try
+            {
+                driver.Url = "https://automationteststore.com/";
+                driver.FindElement(By.LinkText("Login or register")).Click();
+                driver.FindElement(By.CssSelector("button[title='Continue']")).Click();
+                driver.FindElement(By.Id("AccountFrm_agree")).Click();
+                driver.FindElement(By.CssSelector("button[title='Continue']")).Click();
+
+
+                var errorMessage = driver.FindElement(By.XPath("//*[@id=\"AccountFrm\"]/div[3]/fieldset/div[1]/span")).Text;
+                errorMessage.Should().Contain("Login name must be alphanumeric only and between 5 and 64 characters!", "because the user name do not meet requirement");
+
+                
+
+            }
+            finally
+            {
+                driver.Quit();
+                driver.Dispose();
+            }
+        }
+
     }
 }
