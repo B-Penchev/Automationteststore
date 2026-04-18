@@ -93,5 +93,39 @@ namespace Automationteststore
             }
         }
 
+        [Theory]
+        [InlineData("chrome")]
+        [InlineData("edge")]
+        public void SpecialOffersTest(string browser)
+        {
+            IWebDriver driver = browser switch
+            {
+                "chrome" => new ChromeDriver(),
+                "edge" => new EdgeDriver(),
+                _ => throw new ArgumentException("Unknown browser")
+            };
+
+            try
+            {
+                driver.Url = "https://automationteststore.com/";
+                driver.Manage().Window.Maximize();
+                driver.FindElement(By.LinkText("Login or register")).Click();
+                driver.FindElement(By.Id("loginFrm_loginname")).SendKeys("Borisfb9e5845-6b01-4e31-87b5-5f48d475e2c4");
+                driver.FindElement(By.Id("loginFrm_password")).SendKeys("0000");
+                driver.FindElement(By.CssSelector("button[title='Login']")).Click();
+                
+                driver.FindElement(By.CssSelector("a.menu_specials")).Click();
+                
+
+
+
+
+            }
+            finally
+            {
+                //driver.Quit();
+                //driver.Dispose();
+            }
+        }
     }
 }
