@@ -115,16 +115,19 @@ namespace Automationteststore
                 driver.FindElement(By.CssSelector("button[title='Login']")).Click();
                 
                 driver.FindElement(By.CssSelector("a.menu_specials")).Click();
-                
 
-
-
+                var products = driver.FindElements(By.CssSelector(".thumbnail"));
+                foreach (var product in products)
+                {
+                    var salePrice = product.FindElements(By.CssSelector(".pricenew"));
+                    salePrice.Should().NotBeEmpty("Every product on the Specials page must display a discounted price.");
+                }
 
             }
             finally
             {
-                //driver.Quit();
-                //driver.Dispose();
+                driver.Quit();
+                driver.Dispose();
             }
         }
     }
