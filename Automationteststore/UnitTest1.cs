@@ -25,11 +25,9 @@ namespace Automationteststore
                 driver.Url = "https://automationteststore.com/";
                 driver.FindElement(By.LinkText("Login or register")).Click();
                 driver.FindElement(By.CssSelector("button[title='Continue']")).Click();
-           
                 driver.FindElement(By.CssSelector("#AccountFrm_firstname")).SendKeys("Boris");
                 driver.FindElement(By.CssSelector("#AccountFrm_lastname")).SendKeys("Penchev");
                 driver.FindElement(By.CssSelector("#AccountFrm_email")).SendKeys("test" + System.Guid.NewGuid() + "@test.com");
-                
                 driver.FindElement(By.CssSelector("#AccountFrm_address_1")).SendKeys("Mladost");
                 driver.FindElement(By.CssSelector("#AccountFrm_city")).SendKeys("Sofia");
 
@@ -43,11 +41,9 @@ namespace Automationteststore
                 selectReg.SelectByText("Sofia - town");
 
                 driver.FindElement(By.CssSelector("#AccountFrm_postcode")).SendKeys("1712");
-
                 driver.FindElement(By.CssSelector("#AccountFrm_loginname")).SendKeys("Boris" + System.Guid.NewGuid());
                 driver.FindElement(By.CssSelector("#AccountFrm_password")).SendKeys("0000");
                 driver.FindElement(By.CssSelector("#AccountFrm_confirm")).SendKeys("0000");
-
                 driver.FindElement(By.Id("AccountFrm_agree")).Click();
                 driver.FindElement(By.CssSelector("button[title='Continue']")).Click();
 
@@ -83,7 +79,6 @@ namespace Automationteststore
                 driver.FindElement(By.CssSelector("button[title='Continue']")).Click();
                 driver.FindElement(By.Id("AccountFrm_agree")).Click();
                 driver.FindElement(By.CssSelector("button[title='Continue']")).Click();
-
 
                 var errorMessage = driver.FindElement(By.XPath("//*[@id=\"AccountFrm\"]/div[3]/fieldset/div[1]/span")).Text;
                 errorMessage.Should().Contain("Login name must be alphanumeric only and between 5 and 64 characters!", "because the user name do not meet requirement");
