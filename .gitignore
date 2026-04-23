@@ -4,3 +4,6 @@
 
 /.vs/Automationteststore.slnx/copilot-chat/18922732/sessions/ab3cb13b-a098-435a-baf9-46d31996dab1
 /.vs/Automationteststore.slnx/copilot-chat/18922732/sessions/54bd7b7d-fd8c-4467-beda-a42fe59cff5e
+.vs/
+**/bin/
+**/obj/
