@@ -7,17 +7,17 @@ namespace Tests;
 
 public abstract class BaseTest : IDisposable
 {
-    private readonly DriverManager _driverManager;
+    private DriverManager? _driverManager;
     private bool _disposed;
 
-    protected IWebDriver Driver => _driverManager.Driver;
+    protected IWebDriver Driver => _driverManager!.Driver;
     protected TestSettings Settings => ConfigurationLoader.Settings;
     protected HomePage HomePage => new(Driver);
 
-    protected BaseTest()
+    protected void InitBrowser(string browser)
     {
         _driverManager = new DriverManager();
-        _driverManager.Initialise();
+        _driverManager.Initialise(browser);
         Driver.Url = Settings.BaseUrl;
     }
 
@@ -25,7 +25,7 @@ public abstract class BaseTest : IDisposable
     {
         if (_disposed) return;
         if (disposing)
-            _driverManager.Dispose();
+            _driverManager?.Dispose();
         _disposed = true;
     }
 

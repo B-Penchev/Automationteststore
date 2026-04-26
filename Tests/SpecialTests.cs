@@ -4,9 +4,12 @@ namespace Tests;
 
 public class SpecialsTests : BaseTest
 {
-    [Fact]
-    public void SpecialsPage_AllProducts_DisplayDiscountedPrice()
+    [Theory]
+    [ClassData(typeof(BrowserData))]
+    public void SpecialsPage_AllProducts_DisplayDiscountedPrice(string browser)
     {
+        InitBrowser(browser);
+
         var specialsPage = HomePage
             .ClickLoginOrRegister()
             .Login(Settings.ExistingUser.LoginName, Settings.ExistingUser.Password)
@@ -14,11 +17,8 @@ public class SpecialsTests : BaseTest
 
         var salePricePresence = specialsPage.GetSalePricePresencePerProduct();
 
-        salePricePresence.Should().NotBeEmpty(
-            because: "the Specials page should always have at least one product");
-
+        salePricePresence.Should().NotBeEmpty();
         salePricePresence.Should().AllSatisfy(hasPrice =>
-            hasPrice.Should().BeTrue(
-                because: "every product on the Specials page must display a discounted price"));
+            hasPrice.Should().BeTrue());
     }
 }

@@ -16,9 +16,9 @@ public class DriverManager : IDisposable
         }
     }
 
-    public void Initialise()
+    public void Initialise(string browser)
     {
-        _driver = DriverFactory.Create();
+        _driver = DriverFactory.Create(browser);
     }
 
     public void Dispose()

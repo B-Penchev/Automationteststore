@@ -7,15 +7,13 @@ namespace Core.Driver;
 
 public static class DriverFactory
 {
-    public static IWebDriver Create()
+    public static IWebDriver Create(string browser)
     {
-        var browser = ConfigurationLoader.Settings.Browser.ToLower().Trim();
-
-        return browser switch
+        return browser.ToLower().Trim() switch
         {
             "chrome" => CreateChromeDriver(),
             "edge" => CreateEdgeDriver(),
-            _ => throw new ArgumentException($"Unsupported browser: '{browser}'. Valid values are 'chrome' or 'edge'.")
+            _ => throw new ArgumentException($"Unsupported browser: '{browser}'.")
         };
     }
 

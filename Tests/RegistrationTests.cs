@@ -1,12 +1,16 @@
 ﻿using FluentAssertions;
+using Tests;
 
 namespace Tests;
 
 public class RegistrationTests : BaseTest
 {
-    [Fact]
-    public void NewAccount_WithValidDetails_ShowsWelcomeMessage()
+    [Theory]
+    [ClassData(typeof(BrowserData))]
+    public void NewAccount_WithValidDetails_ShowsWelcomeMessage(string browser)
     {
+        InitBrowser(browser);
+
         var accountPage = HomePage
             .ClickLoginOrRegister()
             .ClickContinueToRegister()
@@ -26,16 +30,17 @@ public class RegistrationTests : BaseTest
             .Submit();
 
         accountPage.GetWelcomeText()
-            .Should().Contain("Welcome back Boris",
-                because: "the user just completed registration");
-
+            .Should().Contain("Welcome back Boris");
         accountPage.GetSidebarHeaderText()
             .Should().Be("MY ACCOUNT");
     }
 
-    [Fact]
-    public void RegistrationForm_WithEmptyFields_ShowsLoginNameValidationError()
+    [Theory]
+    [ClassData(typeof(BrowserData))]
+    public void RegistrationForm_WithEmptyFields_ShowsLoginNameValidationError(string browser)
     {
+        InitBrowser(browser);
+
         var registrationPage = HomePage
             .ClickLoginOrRegister()
             .ClickContinueToRegister()
@@ -44,7 +49,6 @@ public class RegistrationTests : BaseTest
 
         registrationPage.GetLoginNameErrorText()
             .Should().Contain(
-                "Login name must be alphanumeric only and between 5 and 64 characters!",
-                because: "the login name field was left empty");
+                "Login name must be alphanumeric only and between 5 and 64 characters!");
     }
 }

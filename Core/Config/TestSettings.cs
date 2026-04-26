@@ -2,8 +2,8 @@
 
 public class TestSettings
 {
-    public string Browser { get; set; } = "chrome";
-    public string BaseUrl { get; set; } = "https://automationteststore.com/";
+    public List<string> Browsers { get; set; } = new();
+    public string BaseUrl { get; set; } = string.Empty;
     public ExistingUserSettings ExistingUser { get; set; } = new();
 }
 
