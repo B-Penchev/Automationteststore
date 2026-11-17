@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Tests;
+﻿namespace Tests;
 
 public class BrowserData : TheoryData<string>
 {
